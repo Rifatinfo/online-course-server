@@ -35,5 +35,5 @@ import bcrypt from "bcryptjs";
 
 export const UserService = {
     createStudent
-}
+}   
 

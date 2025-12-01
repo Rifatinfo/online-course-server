@@ -7,10 +7,13 @@ interface EnvConfig {
     PORT: string,
     DATABASE_URL: string,
     NODE_ENV: string,
+    api_secret : string,
+    cloud_name : string,
+    api_key : string
 }
 
 const loadEnvVariable = (): EnvConfig => {
-    const requiredEnvVariable: string[] = ["PORT", "DATABASE_URL", "NODE_ENV"]
+    const requiredEnvVariable: string[] = ["PORT", "DATABASE_URL", "NODE_ENV", "api_secret", "cloud_name", "api_key"]
 
     requiredEnvVariable.forEach(key => {
         if (!process.env[key]) {
@@ -22,6 +25,10 @@ const loadEnvVariable = (): EnvConfig => {
         PORT: process.env.PORT as string,
         DATABASE_URL: process.env.DATABASE_URL as string,
         NODE_ENV: process.env.NODE_ENV as string,
+        api_secret: process.env.CLOUDINARY_API_SECRET as string,
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME as string,
+        api_key: process.env.CLOUDINARY_API_KEY as string
+    
     }
 }
 
