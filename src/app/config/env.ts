@@ -13,8 +13,8 @@ interface EnvConfig {
 }
 
 const loadEnvVariable = (): EnvConfig => {
-    const requiredEnvVariable: string[] = ["PORT", "DATABASE_URL", "NODE_ENV", "api_secret", "cloud_name", "api_key"]
-
+    const requiredEnvVariable: string[] = ["PORT", "DATABASE_URL", "NODE_ENV", "CLOUDINARY_API_SECRET", "CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY"]
+    
     requiredEnvVariable.forEach(key => {
         if (!process.env[key]) {
             throw new Error(`Missing required environment variable ${key}`)
@@ -32,4 +32,5 @@ const loadEnvVariable = (): EnvConfig => {
     }
 }
 
-export const envVars = loadEnvVariable();
+export const envVars = loadEnvVariable();  
+

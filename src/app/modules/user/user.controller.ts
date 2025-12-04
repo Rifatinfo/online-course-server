@@ -5,7 +5,7 @@ import { sendResponse } from "../../middlewares/sendResponse";
 
 const createStudent = catchAsync(async (req: Request, res : Response) => {
     console.log("Student : ", req.body);
-    const result = await UserService.createStudent(req.body);
+    const result = await UserService.createStudent(req);
 
     sendResponse(res, {
         statusCode : 201,
