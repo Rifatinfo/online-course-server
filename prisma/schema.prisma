@@ -20,11 +20,13 @@ model User {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   status    UserStatus @default(ACTIVE)
+  stripeCustomerId String? @unique
   admin     Admin?
   student   Student?
   course    Course[]
 
   @@map("user")
+  enrollments Enrollment[]
 }
 
 model Student {
@@ -75,7 +77,53 @@ model Course {
 
   chapter Chapter[]
   @@map("course")
+  enrollments Enrollment[]
 }
+
+model Chapter{
+    id String @id @default(uuid())
+    title String
+    position Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+    Course Course? @relation(fields : [courseId], references : [id], onDelete: Cascade)
+    courseId String
+    lessons Lesson[]
+
+    @@map("chapter")
+}
+
+model Lesson {
+    id String @id @default(uuid())
+    title String
+    description String?
+    thumbnailKey String?
+    videoKey String? 
+    position Int 
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+    chapterId String
+    Chapter Chapter @relation(fields : [chapterId], references : [id], onDelete: Cascade)
+
+    @@map("lesson")
+}
+
+
+model Enrollment {
+  id String @id @default(uuid())
+  amount Int 
+  courseId String
+  Course Course @relation(fields : [courseId], references: [id], onDelete: Cascade)
+  userId String 
+  User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status EnrollmentStatus @default(Pending)
+  createdAt DateTime @default(now())
+  updatesAt DateTime @updatedAt
+
+  @@unique([userId, courseId])
+}
+
+
 
 enum CourseLevel {
   Beginner
@@ -99,31 +147,8 @@ enum UserStatus {
   INACTIVE
 }
 
-model Chapter{
-    id String @id @default(uuid())
-    title String
-    position Int
-    createdAt DateTime @default(now())
-    updatedAt DateTime @default(now())
-    Course Course? @relation(fields : [courseId], references : [id])
-    courseId String
-    lessons Lesson[]
-
-    @@map("chapter")
-}
-
-model Lesson {
-    id String @id @default(uuid())
-    title String
-    description String?
-    thumbnailKey String?
-    videoKey String? 
-    position Int 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @default(now())
-    chapterId String
-    Chapter Chapter @relation(fields : [chapterId], references : [id])
-
-    @@map("lesson")
+enum EnrollmentStatus {
+  Pending
+  Active
 }
 
