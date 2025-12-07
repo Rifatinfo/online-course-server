@@ -10,5 +10,8 @@ router.post("/create-student",   fileUploader.upload.single('file'),
         return UserController.createStudent(req, res, next)
     });
 
-
+router.get(
+    "/",
+    UserController.getAllFromDB
+)
 export const UserRouters = router;
