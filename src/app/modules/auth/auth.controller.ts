@@ -1,7 +1,8 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../middlewares/catchAsync";
 import { AuthService } from "./auth.service";
 import { sendResponse } from "../../middlewares/sendResponse";
+import { StatusCodes } from "http-status-codes";
 
 const login = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.login(req.body);
@@ -31,6 +32,28 @@ const login = catchAsync(async (req: Request, res: Response) => {
   })
 })
 
+const logout = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+
+    res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
+
+    sendResponse(res, {
+        success: true,
+        statusCode: StatusCodes.OK,
+        message: "User Logged Out Successfully",
+        data: null,
+    })
+})
 export const AuthController = {
-  login
+  login,
+  logout
 }
+
