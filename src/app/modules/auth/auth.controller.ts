@@ -6,19 +6,19 @@ import { StatusCodes } from "http-status-codes";
 
 const login = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.login(req.body);
-  const { accessToken, refreshToken} = result;
-  
+  const { accessToken, refreshToken } = result;
+
   res.cookie("accessToken", accessToken, {
-    secure : true,
-    httpOnly : true,
-    sameSite : "none",
-    maxAge : 1000 * 60 * 60
+    secure: true,
+    httpOnly: true,
+    sameSite: "none",
+    maxAge: 1000 * 60 * 60
   })
   res.cookie("refreshToken", refreshToken, {
-    secure : true,
-    httpOnly : true,
-    sameSite : "none",
-    maxAge : 1000 * 60 * 60 * 24 * 90
+    secure: true,
+    httpOnly: true,
+    sameSite: "none",
+    maxAge: 1000 * 60 * 60 * 24 * 90
   })
 
   sendResponse(res, {
@@ -26,31 +26,31 @@ const login = catchAsync(async (req: Request, res: Response) => {
     success: true,
     message: "User Login successfully",
     data: {
-     accessToken,
-     refreshToken
+      accessToken,
+      refreshToken
     }
   })
 })
 
 const logout = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    res.clearCookie("accessToken", {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax"
-    })
-    res.clearCookie("refreshToken", {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax"
-    })
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax"
+  })
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax"
+  })
 
-    sendResponse(res, {
-        success: true,
-        statusCode: StatusCodes.OK,
-        message: "User Logged Out Successfully",
-        data: null,
-    })
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "User Logged Out Successfully",
+    data: null,
+  })
 })
 export const AuthController = {
   login,
