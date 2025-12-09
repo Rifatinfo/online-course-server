@@ -23,7 +23,7 @@ model User {
   stripeCustomerId String? @unique
   admin     Admin?
   student   Student?
-  course    Course[]
+  // course    Course[]
 
   @@map("user")
   enrollments Enrollment[]
@@ -63,18 +63,18 @@ model Admin {
 model Course {
   id String @id @default(uuid())
   title           String
-  slug            String
+  slug            String    @unique
   smallDescription String
   description     String
-  thumbnail       String[]  // ✔ array field
+  thumbnail       String  
   duration        Int
   price           Int
   createdAt       DateTime @default(now())
   category CourseLevel @default(Beginner)
   course_Status CourseStatus @default(Pending)
   updatedAt DateTime @updatedAt
-  userId String
-  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // userId String
+  // user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   chapter Chapter[]
   @@map("course")
