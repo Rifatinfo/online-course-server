@@ -2,8 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import { UserController } from "./user.controller";
 import { fileUploader } from "../../helper/fileUploader";
 import { UserValidation } from "./user.validation";
-import auth from "../../middlewares/auth";
-import { UserRole } from "../../../generated/prisma/enums";
+
 
 const router = Router();
 router.post("/create-student",   fileUploader.upload.single('file'),
@@ -13,7 +12,7 @@ router.post("/create-student",   fileUploader.upload.single('file'),
     });
 
 router.get(
-    "/", auth(UserRole.ADMIN),
+    "/", 
     UserController.getAllFromDB
 )
 
